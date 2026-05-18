@@ -32,7 +32,7 @@
     <meta name="twitter:creator"     content="{{ $seo['twitter_handle'] }}">
 
     {{-- ─── Favicon ────────────────────────────────────────────── --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" href="{{ get_image('app_ico') ?? asset('assets/img/favicon/Encodex.ico') }}" type="image/x-icon">
 
     {{-- ─── Bootstrap 5.3 ──────────────────────────────────────── --}}
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
