@@ -6,9 +6,18 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
 use ME\Portfolio\Models\Message;
+use ME\EmCore\Services\TelegramBotService;
 
 class PordfolioController extends Controller
 {
+
+    protected $telegramService;
+
+    public function __construct(TelegramBotService $telegramService)
+    {
+        $this->telegramService = $telegramService;
+    }
+
     public function index(Request $request)
     {
         $cfg = config('port3folio', []);
@@ -102,6 +111,14 @@ class PordfolioController extends Controller
             'message' => $validated['message'],
             'device_info' => json_encode($request->device_info ?? $request->header('User-Agent')),
         ]);
+
+            $telegramMessage = "📨 *New Message Received*\n\n"
+                . "👤 *Name:* " . $message->name . "\n"
+                . "📧 *Email:* " . $message->email . "\n"
+                . "📝 *Subject:* " . $message->subject . "\n\n"
+                . "💬 *Message:*\n" . $message->message;
+
+            $this->telegramService->sendMessage($telegramMessage);
 
         return response()->json(['message' => 'Message sent successfully!']);
     }
