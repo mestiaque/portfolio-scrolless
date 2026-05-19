@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
 use ME\Portfolio\Models\Message;
-use ME\EmCore\Services\TelegramBotService;
+use ME\Services\TelegramBotService;
 
 class PordfolioController extends Controller
 {
