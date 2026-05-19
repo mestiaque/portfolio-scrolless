@@ -112,11 +112,11 @@ class PordfolioController extends Controller
             'device_info' => json_encode($request->device_info ?? $request->header('User-Agent')),
         ]);
 
-            $telegramMessage = "📨 *New Message Received*\n\n"
-                . "👤 *Name:* " . $message->name . "\n"
-                . "📧 *Email:* " . $message->email . "\n"
-                . "📝 *Subject:* " . $message->subject . "\n\n"
-                . "💬 *Message:*\n" . $message->message;
+            $telegramMessage = "📨 New Message Received\n\n"
+                . "👤 Name: " . $message->name . "\n"
+                . "📧 Email: " . $message->email . "\n"
+                . "📝 Subject: " . $message->subject . "\n"
+                . "💬 Message:\n" . $message->message;
 
             $this->telegramService->sendMessage($telegramMessage);
 
