@@ -4,7 +4,7 @@ use ME\Pordfolio\Http\Controllers\PordfolioController;
 use ME\Pordfolio\Http\Controllers\ProjectController;
 use ME\Http\Middleware\LocaleMiddleware;
 
-Route::get('/', [PordfolioController::class, 'index'])
+Route::get('/', [PordfolioController::class, 'index'])->middleware('activityLog')
      ->name('index');
 
 Route::get('/sitemap.xml', [PordfolioController::class, 'sitemap'])
