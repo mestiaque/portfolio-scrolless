@@ -104,7 +104,7 @@ class PordfolioController extends Controller
             'message' => 'required|string',
         ]);
 
-        Message::create([
+        $message = Message::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'subject' => $validated['subject'],
