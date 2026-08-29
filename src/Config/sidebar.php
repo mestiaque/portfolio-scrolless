@@ -2,7 +2,7 @@
 
 return [
     [
-        'title'      => 'ProjectsX',
+        'title'      => 'Projects',
         'icon'       => 'fas fa-briefcase',
         'route'      => 'admin.projects.index',
         'for_active' => 'admin.projects',

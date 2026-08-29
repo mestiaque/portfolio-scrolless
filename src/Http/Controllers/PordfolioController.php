@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\Str;
-use ME\Portfolio\Models\Message;
+use ME\Pordfolio\Models\Message;
 use ME\Services\TelegramBotService;
 
 class PordfolioController extends Controller
