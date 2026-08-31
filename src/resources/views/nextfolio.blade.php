@@ -61,13 +61,13 @@
         .reveal { opacity: 0; transform: translateY(2rem); transition: opacity .7s ease-out, transform .7s ease-out; }
         .reveal.in { opacity: 1; transform: translateY(0); }
 
-        /* ── Mobile hero: scroll-frame canvas ────────────────────── */
-        #hero-mobile { position: relative; width: 100%; }
-        #hero-mobile-sticky {
+        /* ── Hero: scroll-frame canvas (all breakpoints) ──────────── */
+        #hero { position: relative; width: 100%; }
+        #hero-sticky {
             position: sticky; top: 0; left: 0; height: 100svh; width: 100%;
             overflow: hidden; background: #000;
         }
-        #hero-canvas { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 640 / 1138; }
+        #hero-canvas { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16 / 9; }
         #hero-loading {
             position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
             background: #000;
@@ -96,42 +96,51 @@
         .draw-check { animation: drawCheck .5s .15s ease-out forwards; }
 
         [hidden] { display: none !important; }
+
+        /* "Neon blue" section background: ~75% black, ~25% neon blue
+           (#1F51FF), blended flat, plus a very soft glow for a bit of
+           depth without any pattern/lines. */
+        .hex-section {
+            position: relative;
+            background-color: #08143f4f;
+            background-image: radial-gradient(ellipse 900px 500px at 15% 0%, rgba(31, 80, 255, 0.075), transparent 70%);
+        }
     </style>
 </head>
 <body class="bg-black text-white">
 
 <main class="w-full bg-black">
 
-    {{-- ══════════════════════════ HERO — MOBILE (< 768px) ══════════════════════════ --}}
-    <section id="hero-mobile" class="md:hidden" style="height: 400vh;" aria-label="Intro animation">
-        <div id="hero-mobile-sticky">
+    {{-- ══════════════════════════ HERO — scroll-frame, all breakpoints ══════════════════════════ --}}
+    <section id="hero" style="height: 400vh;" aria-label="Intro animation">
+        <div id="hero-sticky">
             <canvas id="hero-canvas" aria-hidden="true"></canvas>
             <div id="hero-loading"><div class="spinner"></div></div>
 
             {{-- Hero copy overlay --}}
             <div id="hero-copy" class="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center px-6 text-center">
-                <p class="mb-5 text-xs font-medium uppercase tracking-[0.4em] text-white/60">{{ $portfolio['job_title'] }}</p>
-                <span class="mb-5 block h-px w-10 bg-white/30"></span>
-                <h1 class="text-[8vw] font-bold leading-[1.1] tracking-tight text-white">{{ $portfolio['name'] }}</h1>
+                <p class="mb-5 text-xs font-medium uppercase tracking-[0.35em] text-white/60 md:text-sm md:tracking-[0.4em]">{{ $portfolio['job_title'] }}</p>
+                <span class="mb-5 block h-px w-10 bg-white/30 md:w-14"></span>
+                <h1 class="text-[9vw] font-bold leading-[1.05] tracking-tight text-white md:text-[clamp(3rem,7vw,7rem)] md:leading-[0.98]">{{ $portfolio['name'] }}</h1>
 
-                <div id="hero-cta" class="pointer-events-auto mt-8 flex items-center gap-3">
+                <div id="hero-cta" class="pointer-events-auto mt-8 flex items-center gap-3 md:mt-10 md:gap-4">
                     @if(!empty($portfolio['email']))
-                    <a href="mailto:{{ $portfolio['email'] }}" aria-label="Email" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/80 active:border-white active:text-white">
+                    <a href="mailto:{{ $portfolio['email'] }}" aria-label="Email" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors duration-200 active:border-white active:text-white md:h-12 md:w-12 md:hover:border-white md:hover:text-white">
                         @include('pordfolio::partials.icon', ['name' => 'email'])
                     </a>
                     @endif
                     @if(!empty($portfolio['telegram']))
-                    <a href="https://t.me/{{ ltrim($portfolio['telegram'], '@') }}" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/80 active:border-white active:text-white">
+                    <a href="https://t.me/{{ ltrim($portfolio['telegram'], '@') }}" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors duration-200 active:border-white active:text-white md:h-12 md:w-12 md:hover:border-white md:hover:text-white">
                         @include('pordfolio::partials.icon', ['name' => 'telegram'])
                     </a>
                     @endif
                     @if(!empty($portfolio['phone']))
-                    <a href="https://wa.me/{{ preg_replace('/[^\d]/', '', $portfolio['phone']) }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/80 active:border-white active:text-white">
+                    <a href="https://wa.me/{{ preg_replace('/[^\d]/', '', $portfolio['phone']) }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors duration-200 active:border-white active:text-white md:h-12 md:w-12 md:hover:border-white md:hover:text-white">
                         @include('pordfolio::partials.icon', ['name' => 'whatsapp'])
                     </a>
                     @endif
                     @foreach($portfolio['social_links'] as $social)
-                    <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $social['label'] }}" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/80 active:border-white active:text-white">
+                    <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $social['label'] }}" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors duration-200 active:border-white active:text-white md:h-12 md:w-12 md:hover:border-white md:hover:text-white">
                         @include('pordfolio::partials.icon', ['name' => strtolower($social['label'])])
                     </a>
                     @endforeach
@@ -139,7 +148,7 @@
             </div>
 
             {{-- Scroll indicator --}}
-            <div id="scroll-hint" class="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-2 transition-opacity duration-500">
+            <div id="scroll-hint" class="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-2 transition-opacity duration-500 md:bottom-10">
                 <span class="text-[10px] font-medium uppercase tracking-[0.35em] text-white/50">Scroll to explore</span>
                 <span class="animate-bounce text-white/50">↓</span>
             </div>
@@ -151,51 +160,12 @@
         </div>
     </section>
 
-    {{-- ══════════════════════════ HERO — DESKTOP/TABLET (≥ 768px) ══════════════════════════ --}}
-    <section class="relative hidden min-h-screen w-full items-center overflow-hidden bg-black px-12 md:flex lg:px-24">
-        <div class="pointer-events-none absolute inset-0">
-            <div class="absolute left-1/2 top-1/2 h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.06]"></div>
-            <div class="absolute left-1/2 top-1/2 h-[50vh] w-[50vh] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.06]"></div>
-            <div class="absolute inset-0" style="background: radial-gradient(ellipse at center, transparent 0%, black 75%);"></div>
-        </div>
-
-        <div class="relative z-10 max-w-4xl">
-            <p class="mb-6 text-xs font-medium uppercase tracking-[0.4em] text-white/60">{{ $portfolio['job_title'] }}</p>
-            <span class="mb-6 block h-px w-14 bg-white/30"></span>
-            <h1 class="text-[clamp(3rem,7vw,7rem)] font-bold leading-[0.98] tracking-tight text-white">{{ $portfolio['name'] }}</h1>
-
-            <div class="mt-10 flex items-center gap-4">
-                @if(!empty($portfolio['email']))
-                <a href="mailto:{{ $portfolio['email'] }}" aria-label="Email" class="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors duration-200 hover:border-white hover:text-white">
-                    @include('pordfolio::partials.icon', ['name' => 'email', 'size' => 20])
-                </a>
-                @endif
-                @if(!empty($portfolio['telegram']))
-                <a href="https://t.me/{{ ltrim($portfolio['telegram'], '@') }}" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors duration-200 hover:border-white hover:text-white">
-                    @include('pordfolio::partials.icon', ['name' => 'telegram', 'size' => 20])
-                </a>
-                @endif
-                @if(!empty($portfolio['phone']))
-                <a href="https://wa.me/{{ preg_replace('/[^\d]/', '', $portfolio['phone']) }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors duration-200 hover:border-white hover:text-white">
-                    @include('pordfolio::partials.icon', ['name' => 'whatsapp', 'size' => 20])
-                </a>
-                @endif
-                @foreach($portfolio['social_links'] as $social)
-                <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $social['label'] }}" class="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors duration-200 hover:border-white hover:text-white">
-                    @include('pordfolio::partials.icon', ['name' => strtolower($social['label']), 'size' => 20])
-                </a>
-                @endforeach
-            </div>
-        </div>
-
-        <div class="pointer-events-none absolute inset-x-0 bottom-10 flex flex-col items-center gap-2">
-            <span class="text-[10px] font-medium uppercase tracking-[0.35em] text-white/40">Scroll to explore</span>
-            <span class="animate-bounce text-white/40">↓</span>
-        </div>
-    </section>
+    {{-- Single shared background for everything below the hero - painted
+         once on this wrapper so the glow doesn't restart per section. --}}
+    <div class="hex-section">
 
     {{-- ══════════════════════════ ABOUT ══════════════════════════ --}}
-    <section class="bg-black py-28 text-white lg:py-40">
+    <section class="py-28 text-white lg:py-40">
         <div class="mx-auto w-full max-w-2xl px-6 lg:max-w-4xl lg:px-12">
             <div class="reveal">
                 <p class="mb-6 text-xs font-medium uppercase tracking-[0.4em] text-white/40">About</p>
@@ -225,7 +195,7 @@
     </section>
 
     {{-- ══════════════════════════ SELECTED WORK ══════════════════════════ --}}
-    <section class="bg-black py-28 text-white lg:py-40">
+    <section class="py-28 text-white lg:py-40">
         <div class="mx-auto w-full max-w-2xl px-6 lg:max-w-6xl lg:px-12">
             <p class="reveal mb-10 text-xs font-medium uppercase tracking-[0.4em] text-white/40 lg:mb-14">Selected Work</p>
 
@@ -259,7 +229,7 @@
     </section>
 
     {{-- ══════════════════════════ EXPERIENCE + EDUCATION ══════════════════════════ --}}
-    <section class="bg-black py-28 text-white lg:py-40">
+    <section class="py-28 text-white lg:py-40">
         <div class="mx-auto w-full max-w-2xl px-6 lg:max-w-6xl lg:px-12">
             <div class="lg:grid lg:grid-cols-2 lg:gap-16">
                 <div>
@@ -295,7 +265,7 @@
     </section>
 
     {{-- ══════════════════════════ CONTACT ══════════════════════════ --}}
-    <footer class="bg-black px-6 pb-14 pt-28 text-white lg:px-12 lg:pb-20 lg:pt-40">
+    <footer class="px-6 pb-14 pt-28 text-white lg:px-12 lg:pb-20 lg:pt-40">
         <div class="mx-auto w-full max-w-2xl lg:max-w-6xl">
             <div class="reveal">
                 <p class="mb-6 text-xs font-medium uppercase tracking-[0.4em] text-white/40">Contact</p>
@@ -384,6 +354,8 @@
         </div>
     </footer>
 
+    </div>
+
 </main>
 
 <script>
@@ -406,10 +378,10 @@
         revealEls.forEach(function (el) { el.classList.add('in'); });
     }
 
-    /* ── Mobile hero: scroll-frame canvas ────────────────────────────── */
+    /* ── Hero: scroll-frame canvas (all breakpoints) ─────────────────── */
     var FRAME_COUNT = {{ (int) $frameCount }};
-    var heroSection = document.getElementById('hero-mobile');
-    var stickyPane = document.getElementById('hero-mobile-sticky');
+    var heroSection = document.getElementById('hero');
+    var stickyPane = document.getElementById('hero-sticky');
     var canvas = document.getElementById('hero-canvas');
     var loadingEl = document.getElementById('hero-loading');
     var heroCopy = document.getElementById('hero-copy');
@@ -417,7 +389,7 @@
     var curtainTop = document.getElementById('curtain-top');
     var curtainBottom = document.getElementById('curtain-bottom');
 
-    if (heroSection && canvas && window.matchMedia('(max-width: 767px)').matches) {
+    if (heroSection && canvas) {
         var ctx = canvas.getContext('2d');
         var images = new Array(FRAME_COUNT + 1);
         var loaded = {};
@@ -448,17 +420,30 @@
             images[i] = img;
         }
 
+        // The source footage is 16:9 landscape; on narrow portrait screens
+        // (mobile) the cover-fit crop has to cut a lot of width away. The
+        // subject sits right-of-centre in frame, so a plain 50% centre
+        // crop was cutting into his face - bias the horizontal crop
+        // toward FOCAL_X (fraction across the source image) instead.
+        // Tune this if a future clip frames the subject differently.
+        var FOCAL_X = 0.65;
+
         function drawFrame(i) {
             var img = images[i];
             if (!img || !img.complete || !img.naturalWidth || !size.width) return;
             ctx.clearRect(0, 0, size.width, size.height);
             var imgRatio = img.naturalWidth / img.naturalHeight;
             var boxRatio = size.width / size.height;
-            var dw, dh;
-            if (imgRatio > boxRatio) { dh = size.height; dw = dh * imgRatio; }
-            else { dw = size.width; dh = dw / imgRatio; }
-            var dx = (size.width - dw) / 2;
-            var dy = (size.height - dh) / 2;
+            var dw, dh, dx, dy;
+            if (imgRatio > boxRatio) {
+                dh = size.height; dw = dh * imgRatio;
+                dx = Math.min(0, Math.max(size.width - dw, size.width / 2 - FOCAL_X * dw));
+                dy = 0;
+            } else {
+                dw = size.width; dh = dw / imgRatio;
+                dx = 0;
+                dy = (size.height - dh) / 2;
+            }
             ctx.drawImage(img, dx, dy, dw, dh);
         }
 
@@ -532,8 +517,6 @@
             requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
-    } else if (loadingEl) {
-        loadingEl.hidden = true;
     }
 
     /* ── Contact form ─────────────────────────────────────────────────── */

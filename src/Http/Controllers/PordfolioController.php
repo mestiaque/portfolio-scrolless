@@ -135,29 +135,54 @@ class PordfolioController extends Controller
             ],
         ];
 
-        $frameCount = count(glob(__DIR__ . '/../../public/frames/frame-*.webp')) ?: 210;
+        $frameCount = count(glob(__DIR__ . '/../../public/frames_all/frame_*.png')) ?: 192;
 
         return view('pordfolio::nextfolio', compact('seo', 'portfolio', 'frameCount'));
     }
 
     /**
-     * Serves the hero scroll-frame keyframe images bundled with this
-     * package (src/public/frames) directly, without requiring the host
-     * app to run vendor:publish.
+     * Serves the hero scroll-frame keyframes. frames_all/ (bundled with
+     * this package) is the single source of truth - the raw PNGs there
+     * (~1MB each) are resized + re-encoded to WebP on the fly here so the
+     * browser gets a small payload, without ever writing a converted copy
+     * back to disk. Far-future Cache-Control means each frame is only
+     * ever converted once per visitor.
      */
     public function frame(string $filename)
     {
-        if (!preg_match('/^frame-\d{3}\.webp$/', $filename)) {
+        if (!preg_match('/^frame-(\d{3})\.webp$/', $filename, $m)) {
             abort(404);
         }
 
-        $path = __DIR__ . '/../../public/frames/' . $filename;
+        $index = ((int) $m[1]) - 1;
+        $sourcePath = __DIR__ . '/../../public/frames_all/' . sprintf('frame_%08d.png', $index);
 
-        if (!is_file($path)) {
+        if ($index < 0 || !is_file($sourcePath)) {
             abort(404);
         }
 
-        return response()->file($path, [
+        $source = @imagecreatefrompng($sourcePath);
+        if (!$source) {
+            abort(404);
+        }
+
+        $targetWidth = 1600;
+        $srcWidth = imagesx($source);
+        $srcHeight = imagesy($source);
+
+        if ($srcWidth > $targetWidth) {
+            $targetHeight = (int) round($srcHeight * ($targetWidth / $srcWidth));
+            $resized = imagescale($source, $targetWidth, $targetHeight);
+            imagedestroy($source);
+            $source = $resized;
+        }
+
+        ob_start();
+        imagewebp($source, null, 74);
+        $webp = ob_get_clean();
+        imagedestroy($source);
+
+        return response($webp, 200, [
             'Content-Type'  => 'image/webp',
             'Cache-Control' => 'public, max-age=31536000, immutable',
         ]);
