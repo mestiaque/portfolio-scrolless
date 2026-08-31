@@ -105,6 +105,64 @@
             background-color: #050811;
             background-image: radial-gradient(ellipse 900px 500px at 15% 0%, rgba(31, 80, 255, 0.075), transparent 70%);
         }
+
+        /* ── Shared layout/type system for every section below the hero ──
+           One consistent container width (80% on desktop) and one
+           consistent eyebrow/heading scale, instead of each section
+           picking its own max-width and font sizes. */
+        .section-container {
+            width: 100%;
+            max-width: 42rem;
+            margin-inline: auto;
+            padding-inline: 1.5rem;
+        }
+        @media (min-width: 1024px) {
+            .section-container { width: 80%; max-width: 1400px; padding-inline: 0; }
+        }
+        .eyebrow {
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.35em;
+            color: rgba(255,255,255,0.4);
+        }
+        .section-heading {
+            font-size: 1.875rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        /* ── Contact section ──────────────────────────────────────── */
+        .contact-card {
+            display: flex; align-items: center; gap: 1rem;
+            border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03); padding: 0.75rem 1rem;
+            transition: border-color .2s, background-color .2s, transform .2s;
+        }
+        .contact-card:active { transform: scale(0.98); }
+        @media (min-width: 1024px) {
+            .contact-card:hover { border-color: rgba(103,232,249,0.35); background: rgba(255,255,255,0.05); }
+        }
+        .contact-icon {
+            display: flex; height: 2.5rem; width: 2.5rem; flex-shrink: 0;
+            align-items: center; justify-content: center; border-radius: 9999px;
+            border: 1px solid rgba(103,232,249,0.25);
+            background: rgba(56,224,255,0.1);
+            color: #a5f3fc;
+        }
+        .contact-input {
+            border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.03); padding: 0.75rem 1rem;
+            font-size: 0.875rem; color: #fff; outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .contact-input::placeholder { color: rgba(255,255,255,0.3); }
+        .contact-input:focus { border-color: rgba(103,232,249,0.5); box-shadow: 0 0 0 3px rgba(103,232,249,0.12); }
+        .contact-input:disabled { opacity: 0.5; }
+        @media (min-width: 1024px) {
+            .section-heading { font-size: 3rem; }
+        }
     </style>
 </head>
 <body class="bg-black text-white">
@@ -165,58 +223,54 @@
     <div class="hex-section">
 
     {{-- ══════════════════════════ ABOUT ══════════════════════════ --}}
-    <section class="py-28 text-white lg:py-40">
-        <div class="mx-auto w-full max-w-2xl px-6 lg:max-w-4xl lg:px-12">
+    <section class="py-24 text-white lg:py-16">
+        <div class="section-container">
             <div class="reveal">
-                <p class="mb-6 text-xs font-medium uppercase tracking-[0.4em] text-white/40">About</p>
-                <p class="text-2xl font-medium leading-snug text-white/90 lg:max-w-2xl lg:text-3xl">{{ $portfolio['bio'] }}</p>
+                <p class="eyebrow">About</p>
+                {{-- <h2 class="section-heading mt-4">Who I am</h2> --}}
+                <p class="mt-4 max-w-3xlx text-base leading-relaxed text-white/70 lg:text-lg">{{ $portfolio['bio'] }}</p>
             </div>
 
             <div class="reveal mt-14 lg:mt-20">
-                <ul class="grid grid-cols-4 gap-y-6 border-y border-white/10 py-8 lg:py-10">
-                    @foreach($portfolio['stats'] as $stat)
-                    <li class="text-center">
-                        <p class="text-xl font-semibold text-white lg:text-3xl">{{ $stat['value'] }}</p>
-                        <p class="mt-1 text-[10px] uppercase tracking-widest text-white/40 lg:text-xs">{{ $stat['label'] }}</p>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-
-            <div class="reveal mt-14 lg:mt-20">
-                <p class="mb-5 text-xs font-medium uppercase tracking-[0.4em] text-white/40">Expertise</p>
-                <ul class="flex flex-wrap gap-2">
-                    @foreach($portfolio['skills'] as $skill)
-                    <li class="rounded-full border border-white/15 px-4 py-2 text-sm text-white/70">{{ $skill }}</li>
-                    @endforeach
-                </ul>
+                <p class="eyebrow mb-5">Expertise</p>
+                <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-6 lg:p-8">
+                    <ul class="flex flex-wrap gap-2.5">
+                        @foreach($portfolio['skills'] as $skill)
+                        <li class="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-white/75 transition-colors duration-200 lg:hover:border-cyan-300/40 lg:hover:bg-white/[0.07] lg:hover:text-white">{{ $skill }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
 
     {{-- ══════════════════════════ SELECTED WORK ══════════════════════════ --}}
-    <section class="py-28 text-white lg:py-40">
-        <div class="mx-auto w-full max-w-2xl px-6 lg:max-w-6xl lg:px-12">
-            <p class="reveal mb-10 text-xs font-medium uppercase tracking-[0.4em] text-white/40 lg:mb-14">Selected Work</p>
+    <section class="py-24 text-white lg:py-16 pt-16">
+        <div class="section-container">
+            <div class="reveal mb-5 lg:mb-7">
+                <p class="eyebrow">Selected Work</p>
+                {{-- <h4 class="section-heading mt-4">Featured projects</h4> --}}
+            </div>
 
-            <div class="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-8 xl:grid-cols-3">
+            <div class="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-6 xl:grid-cols-3">
                 @foreach($portfolio['projects'] as $i => $project)
                 @php $link = $project['demo'] ?: $project['github']; @endphp
                 <{{ $link ? 'a' : 'div' }}
                     @if($link) href="{{ $link }}" target="_blank" rel="noopener noreferrer" @endif
-                    class="reveal group block h-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-transform duration-300 active:scale-[0.98] lg:hover:-translate-y-1 lg:hover:border-white/25"
+                    class="reveal group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-300 active:scale-[0.98] lg:p-7 lg:hover:-translate-y-1.5 lg:hover:border-cyan-300/30 lg:hover:bg-white/[0.05]"
                     style="transition-delay: {{ $i * 60 }}ms"
                 >
+                    <span class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/0 to-transparent transition-all duration-300 lg:group-hover:via-cyan-300/60"></span>
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <p class="text-xs uppercase tracking-widest text-white/40">{{ $project['category'] ?? '' }}</p>
-                            <h3 class="mt-1 text-xl font-semibold text-white">{{ $project['title'] }}</h3>
+                            <h3 class="mt-1.5 text-xl font-semibold text-white">{{ $project['title'] }}</h3>
                         </div>
                         @if($link)
-                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/25 text-white transition-transform duration-300 group-active:translate-x-1 group-active:-translate-y-1">↗</span>
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 text-white transition-all duration-300 group-active:translate-x-1 group-active:-translate-y-1 lg:group-hover:border-cyan-300/50 lg:group-hover:text-cyan-200">↗</span>
                         @endif
                     </div>
-                    <p class="mt-4 text-sm leading-relaxed text-white/60">{{ $project['description'] }}</p>
+                    <p class="mt-4 flex-1 text-sm leading-relaxed text-white/60">{{ $project['description'] }}</p>
                     <ul class="mt-5 flex flex-wrap gap-2">
                         @foreach($project['stack'] as $tech)
                         <li class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/50">{{ $tech }}</li>
@@ -228,105 +282,126 @@
         </div>
     </section>
 
-    {{-- ══════════════════════════ EXPERIENCE + EDUCATION ══════════════════════════ --}}
-    <section class="py-28 text-white lg:py-40">
-        <div class="mx-auto w-full max-w-2xl px-6 lg:max-w-6xl lg:px-12">
-            <div class="lg:grid lg:grid-cols-2 lg:gap-16">
-                <div>
-                    <p class="reveal mb-10 text-xs font-medium uppercase tracking-[0.4em] text-white/40">Experience</p>
-                    <ol class="relative border-l border-white/15 pl-6">
-                        @foreach($portfolio['experience'] as $i => $item)
-                        <li class="reveal relative mb-12 last:mb-0" style="transition-delay: {{ $i * 80 }}ms">
-                            <span class="absolute -left-[29px] top-1 h-2.5 w-2.5 rounded-full bg-white"></span>
-                            <p class="text-xs uppercase tracking-widest text-white/40">{{ $item['period'] }}</p>
-                            <h3 class="mt-2 text-lg font-semibold text-white">{{ $item['role'] }}</h3>
-                            <p class="text-sm text-white/50">{{ $item['company'] }}</p>
-                            <p class="mt-3 text-sm leading-relaxed text-white/70">{{ $item['description'] }}</p>
-                        </li>
-                        @endforeach
-                    </ol>
-                </div>
+    {{-- ══════════════════════════ EXPERIENCE ══════════════════════════ --}}
+    <section class="py-24 text-white lg:py-16">
+        <div class="section-container">
+            <div class="reveal mb-10 lg:mb-14">
+                <p class="eyebrow">Experience</p>
+                {{-- <h2 class="section-heading mt-4">Where I've worked</h2> --}}
+            </div>
 
-                <div class="mt-20 lg:mt-0">
-                    <p class="reveal mb-10 text-xs font-medium uppercase tracking-[0.4em] text-white/40">Education</p>
-                    <ol class="relative border-l border-white/15 pl-6">
-                        @foreach($portfolio['education'] as $i => $item)
-                        <li class="reveal relative mb-12 last:mb-0" style="transition-delay: {{ $i * 80 }}ms">
-                            <span class="absolute -left-[29px] top-1 h-2.5 w-2.5 rounded-full bg-white"></span>
-                            <p class="text-xs uppercase tracking-widest text-white/40">{{ $item['period'] }}</p>
-                            <h3 class="mt-2 text-lg font-semibold text-white">{{ $item['degree'] }}</h3>
-                            <p class="text-sm text-white/50">{{ $item['institution'] }}</p>
-                        </li>
-                        @endforeach
-                    </ol>
+            <div class="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-6">
+                @foreach($portfolio['experience'] as $i => $item)
+                <div class="reveal flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors duration-300 lg:hover:border-cyan-300/30 lg:hover:bg-white/[0.05] @if($loop->last && $loop->count % 2 !== 0) lg:col-span-2 lg:mx-auto lg:w-[calc(50%-0.75rem)] @endif" style="transition-delay: {{ $i * 80 }}ms">
+                    <span class="contact-icon shrink-0">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="2" y="7" width="20" height="14" rx="2" />
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                        </svg>
+                    </span>
+                    <div>
+                        <p class="text-xs uppercase tracking-widest text-white/40">{{ $item['period'] }}</p>
+                        <h3 class="mt-1 text-lg font-semibold text-white lg:text-xl">{{ $item['role'] }}</h3>
+                        <p class="text-sm text-white/50">{{ $item['company'] }}</p>
+                        <p class="mt-3 text-sm leading-relaxed text-white/70">{{ $item['description'] }}</p>
+                    </div>
                 </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ══════════════════════════ EDUCATION ══════════════════════════ --}}
+    <section class="py-24 text-white lg:py-16">
+        <div class="section-container">
+            <div class="reveal mb-10 lg:mb-14">
+                <p class="eyebrow">Education</p>
+                {{-- <h2 class="section-heading mt-4">Academic background</h2> --}}
+            </div>
+
+            <div class="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:gap-6">
+                @foreach($portfolio['education'] as $i => $item)
+                <div class="reveal flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-colors duration-300 lg:hover:border-cyan-300/30 lg:hover:bg-white/[0.05]" style="transition-delay: {{ $i * 80 }}ms">
+                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M22 10 12 5 2 10l10 5 10-5Z" />
+                            <path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" />
+                        </svg>
+                    </span>
+                    <div>
+                        <p class="text-xs uppercase tracking-widest text-white/40">{{ $item['period'] }}</p>
+                        <h3 class="mt-1 text-lg font-semibold text-white">{{ $item['degree'] }}</h3>
+                        <p class="text-sm text-white/50">{{ $item['institution'] }}</p>
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
     </section>
 
     {{-- ══════════════════════════ CONTACT ══════════════════════════ --}}
-    <footer class="px-6 pb-14 pt-28 text-white lg:px-12 lg:pb-20 lg:pt-40">
-        <div class="mx-auto w-full max-w-2xl lg:max-w-6xl">
-            <div class="reveal">
-                <p class="mb-6 text-xs font-medium uppercase tracking-[0.4em] text-white/40">Contact</p>
-                <h2 class="text-4xl font-semibold leading-[1.05] tracking-tight lg:text-6xl">Let's build something great.</h2>
+    <footer class="px-6 pb-14 pt-24 text-white lg:pb-20 lg:pt-16">
+        <div class="section-container">
+            <div class="reveal mb-10 lg:mb-14">
+                <p class="eyebrow">Contact</p>
+                {{-- <h2 class="mt-4 text-4xl font-semibold leading-[1.05] tracking-tight text-white lg:text-6xl">Let's build something great.</h2> --}}
             </div>
 
             <div class="lg:grid lg:grid-cols-2 lg:gap-16">
                 {{-- Contact Hub --}}
-                <ul class="mt-10 flex flex-col gap-3 lg:mt-14 lg:grid lg:grid-cols-2 lg:content-start lg:gap-3">
+                <ul class="flex flex-col gap-3 lg:grid lg:grid-cols-1 lg:content-start lg:gap-3">
                     @if(!empty($portfolio['phone']))
                     <li>
-                        <a href="tel:{{ preg_replace('/[^\d+]/', '', $portfolio['phone']) }}" class="reveal flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-transform duration-200 active:scale-[0.98] lg:hover:border-white/25">
-                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70">@include('pordfolio::partials.icon', ['name' => 'phone'])</span>
+                        <a href="tel:{{ preg_replace('/[^\d+]/', '', $portfolio['phone']) }}" class="reveal contact-card">
+                            <span class="contact-icon">@include('pordfolio::partials.icon', ['name' => 'phone'])</span>
                             <span><p class="text-sm font-medium text-white">Phone</p><p class="text-xs text-white/50">{{ $portfolio['phone'] }}</p></span>
                         </a>
                     </li>
                     @endif
                     @if(!empty($portfolio['email']))
                     <li>
-                        <a href="mailto:{{ $portfolio['email'] }}" class="reveal flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-transform duration-200 active:scale-[0.98] lg:hover:border-white/25">
-                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70">@include('pordfolio::partials.icon', ['name' => 'email'])</span>
+                        <a href="mailto:{{ $portfolio['email'] }}" class="reveal contact-card">
+                            <span class="contact-icon">@include('pordfolio::partials.icon', ['name' => 'email'])</span>
                             <span><p class="text-sm font-medium text-white">Email</p><p class="text-xs text-white/50">{{ $portfolio['email'] }}</p></span>
                         </a>
                     </li>
                     @endif
                     @if(!empty($portfolio['address']))
                     <li>
-                        <div class="reveal flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70">@include('pordfolio::partials.icon', ['name' => 'address'])</span>
+                        <div class="reveal contact-card">
+                            <span class="contact-icon">@include('pordfolio::partials.icon', ['name' => 'address'])</span>
                             <span><p class="text-sm font-medium text-white">Address</p><p class="text-xs text-white/50">{{ $portfolio['address'] }}</p></span>
                         </div>
                     </li>
                     @endif
                     @if(!empty($portfolio['telegram']))
                     <li>
-                        <a href="https://t.me/{{ ltrim($portfolio['telegram'], '@') }}" target="_blank" rel="noopener noreferrer" class="reveal flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-transform duration-200 active:scale-[0.98] lg:hover:border-white/25">
-                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70">@include('pordfolio::partials.icon', ['name' => 'telegram'])</span>
+                        <a href="https://t.me/{{ ltrim($portfolio['telegram'], '@') }}" target="_blank" rel="noopener noreferrer" class="reveal contact-card">
+                            <span class="contact-icon">@include('pordfolio::partials.icon', ['name' => 'telegram'])</span>
                             <span><p class="text-sm font-medium text-white">Telegram</p><p class="text-xs text-white/50">{{ $portfolio['telegram'] }}</p></span>
                         </a>
                     </li>
                     @endif
                     @if(!empty($portfolio['phone']))
                     <li>
-                        <a href="https://wa.me/{{ preg_replace('/[^\d]/', '', $portfolio['phone']) }}" target="_blank" rel="noopener noreferrer" class="reveal flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-transform duration-200 active:scale-[0.98] lg:hover:border-white/25">
-                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70">@include('pordfolio::partials.icon', ['name' => 'whatsapp'])</span>
+                        <a href="https://wa.me/{{ preg_replace('/[^\d]/', '', $portfolio['phone']) }}" target="_blank" rel="noopener noreferrer" class="reveal contact-card">
+                            <span class="contact-icon">@include('pordfolio::partials.icon', ['name' => 'whatsapp'])</span>
                             <span><p class="text-sm font-medium text-white">WhatsApp</p><p class="text-xs text-white/50">Chat instantly</p></span>
                         </a>
                     </li>
                     @endif
-                    @foreach($portfolio['social_links'] as $social)
+                    {{-- @foreach($portfolio['social_links'] as $social)
                     <li>
-                        <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" class="reveal flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-transform duration-200 active:scale-[0.98] lg:hover:border-white/25">
-                            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70">@include('pordfolio::partials.icon', ['name' => strtolower($social['label'])])</span>
+                        <a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" class="reveal contact-card">
+                            <span class="contact-icon">@include('pordfolio::partials.icon', ['name' => strtolower($social['label'])])</span>
                             <span><p class="text-sm font-medium text-white">{{ $social['label'] }}</p><p class="text-xs text-white/50">{{ preg_replace('#^https?://#', '', $social['url']) }}</p></span>
                         </a>
                     </li>
-                    @endforeach
+                    @endforeach --}}
                 </ul>
 
                 {{-- Message form --}}
-                <div class="mt-10 lg:mt-14">
+                <div class="mt-10 lg:mt-0">
                     <div id="contact-success" hidden class="flex flex-col items-center gap-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] py-12 text-center fade-in">
                         <span class="flex h-14 w-14 items-center justify-center rounded-full border-2 border-emerald-400 text-emerald-400">
                             <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -338,11 +413,11 @@
                     </div>
 
                     <form id="contact-form" class="flex flex-col gap-4">
-                        <input name="name" type="text" required placeholder="Your name" class="rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/40 disabled:opacity-50">
-                        <input name="email" type="email" required placeholder="Your email" class="rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/40 disabled:opacity-50">
-                        <input name="subject" type="text" required placeholder="Subject" class="rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/40 disabled:opacity-50">
-                        <textarea name="message" required rows="4" placeholder="Your message" class="resize-none rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-white/30 outline-none focus:border-white/40 disabled:opacity-50"></textarea>
-                        <button type="submit" id="contact-submit" class="mt-2 rounded-xl bg-white py-3 text-sm font-medium text-black active:opacity-70 disabled:opacity-50">Send message</button>
+                        <input name="name" type="text" required placeholder="Your name" class="contact-input">
+                        <input name="email" type="email" required placeholder="Your email" class="contact-input">
+                        <input name="subject" type="text" required placeholder="Subject" class="contact-input">
+                        <textarea name="message" required rows="4" placeholder="Your message" class="contact-input resize-none"></textarea>
+                        <button type="submit" id="contact-submit" class="mt-2 rounded-xl bg-white py-3 text-sm font-semibold text-black transition-shadow duration-300 active:opacity-70 disabled:opacity-50 lg:hover:shadow-[0_0_24px_rgba(103,232,249,0.35)]">Send message</button>
                         <p id="contact-error" hidden class="text-sm text-red-400"></p>
                     </form>
                 </div>
