@@ -54,7 +54,7 @@
 
     <style>
         html { overflow-x: hidden; }
-        html, body { background: #000; color: #ededed; overscroll-behavior-y: none; }
+        html, body { background: #050811; color: #ededed; overscroll-behavior-y: none; }
         body { font-family: 'Inter', Arial, Helvetica, sans-serif; }
 
         /* ── Reveal-on-scroll ─────────────────────────────────── */
@@ -65,12 +65,12 @@
         #hero { position: relative; width: 100%; }
         #hero-sticky {
             position: sticky; top: 0; left: 0; height: 100svh; width: 100%;
-            overflow: hidden; background: #000;
+            overflow: hidden; background: #050811;
         }
         #hero-canvas { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16 / 9; }
         #hero-loading {
             position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-            background: #000;
+            background: #050811;
         }
         .spinner {
             height: 2rem; width: 2rem; border-radius: 9999px;
@@ -79,7 +79,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .curtain { position: absolute; inset-inline: 0; z-index: 10; height: 50%; background: #000; }
+        .curtain { position: absolute; inset-inline: 0; z-index: 10; height: 50%; background: #050811; }
         .curtain-top { top: 0; }
         .curtain-bottom { bottom: 0; }
 
@@ -102,7 +102,7 @@
            depth without any pattern/lines. */
         .hex-section {
             position: relative;
-            background-color: #08143f4f;
+            background-color: #050811;
             background-image: radial-gradient(ellipse 900px 500px at 15% 0%, rgba(31, 80, 255, 0.075), transparent 70%);
         }
     </style>
