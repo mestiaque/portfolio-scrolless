@@ -23,7 +23,7 @@ class PordfolioController extends Controller
         $cfg = config('port3folio', []);
 
         $seo = [
-            'title'          => $cfg['seo']['title']          ?? 'M. Estiaque Ahmed Khan | Software Engineer & Laravel Developer',
+            'title'          => $cfg['seo']['title']          ?? 'M. Estiaque Ahmed Khan | Full Stack Laravel Developer',
             'description'    => $cfg['seo']['description']    ?? 'Experienced full-stack Laravel developer building modern, performant web applications.',
             'keywords'       => $cfg['seo']['keywords']        ?? 'Laravel, PHP, Full Stack Developer, Web Developer, Portfolio',
             'author'         => $cfg['seo']['author']          ?? 'M. Estiaque Ahmed Khan',
@@ -32,22 +32,28 @@ class PordfolioController extends Controller
             'twitter_handle' => $cfg['seo']['twitter_handle']  ?? '@mestiaque',
             'github_url'     => $cfg['seo']['github_url']      ?? 'https://github.com/mestiaque',
             'linkedin_url'   => $cfg['seo']['linkedin_url']    ?? 'https://linkedin.com/in/mestiaque',
-            'job_title'      => $cfg['seo']['job_title']       ?? 'Full Stack Laravel Developer',
+            'job_title'      => $cfg['seo']['job_title']       ?? 'Software Engineer',
             'url'            => $request->url(),
         ];
 
         $portfolio = [
             'name'      => $cfg['portfolio']['name']      ?? 'M. Estiaque Ahmed Khan',
-            'job_title' => $cfg['portfolio']['job_title'] ?? 'Full Stack Laravel Developer',
+            'job_title' => $cfg['portfolio']['job_title'] ?? 'Software Engineer',
+            'tagline'   => $cfg['portfolio']['tagline']   ?? 'Building scalable ERP & web systems with Laravel and PHP.',
             'photo'     => $cfg['portfolio']['photo']     ?? '',
             'cv_url'    => $cfg['portfolio']['cv_url']    ?? '',
-            'bio'       => $cfg['portfolio']['bio']       ?? 'I\'m a <strong>full-stack developer</strong> with deep expertise in <strong>Laravel</strong>, Vue.js, and modern DevOps practices. I focus on writing clean, testable code that scales, and I care deeply about developer experience and product quality.',
+            'bio'       => $cfg['portfolio']['bio']       ?? "I'm a dedicated Software Engineer and Web Developer in Bangladesh with a strong foundation in Laravel and PHP. Over the past 4 years, I've specialized in building robust ERP systems and inventory management software that drive business efficiency, with expertise extending to API integration and server performance optimization for scalable web applications.",
+
+            'email'   => $cfg['portfolio']['email']   ?? 'info@mestiaque.com',
+            'phone'   => $cfg['portfolio']['phone']   ?? '+880 1796-009656',
+            'address' => $cfg['portfolio']['address'] ?? 'Uttara, Dhaka, Bangladesh',
+            'telegram' => $cfg['portfolio']['telegram'] ?? '@_mestiaque',
 
             'stats' => $cfg['portfolio']['stats'] ?? [
-                ['value' => '5+',  'label' => 'Years Exp.'],
-                ['value' => '40+', 'label' => 'Projects'],
-                ['value' => '20+', 'label' => 'Clients'],
-                ['value' => '99%', 'label' => 'Satisfaction'],
+                ['value' => '4+',  'label' => 'Years Active'],
+                ['value' => '20+', 'label' => 'Projects Shipped'],
+                ['value' => '10+', 'label' => 'Teams Collaborated'],
+                ['value' => 'BD',  'label' => 'Current Base'],
             ],
 
             'skills' => $cfg['portfolio']['skills'] ?? [
@@ -61,9 +67,44 @@ class PordfolioController extends Controller
                 ['label' => 'LinkedIn', 'icon' => 'linkedin', 'url' => 'https://linkedin.com/in/mestiaque'],
             ],
 
+            'experience' => $cfg['portfolio']['experience'] ?? [
+                [
+                    'role'        => 'Software Engineer',
+                    'company'     => 'Natore IT',
+                    'period'      => '2025 — Present',
+                    'description' => 'Frontend optimization and database management for local business clients.',
+                ],
+                [
+                    'role'        => 'Software Developer',
+                    'company'     => 'Isotope IT',
+                    'period'      => '2023 — 2025',
+                    'description' => 'Specialized in PHP/Laravel web applications and custom inventory management modules.',
+                ],
+                [
+                    'role'        => 'Software Engineer',
+                    'company'     => 'Barcode Tech Automation Ltd',
+                    'period'      => '2022 — 2023',
+                    'description' => 'Led development of enterprise automation solutions and ERP systems integration.',
+                ],
+            ],
+
+            'education' => $cfg['portfolio']['education'] ?? [
+                [
+                    'degree'      => 'MSc in Computer Science',
+                    'institution' => 'Uttara University',
+                    'period'      => '2025',
+                ],
+                [
+                    'degree'      => 'BSc in Computer Science and Engineering',
+                    'institution' => 'Uttara University',
+                    'period'      => '2021',
+                ],
+            ],
+
             'projects' => $cfg['portfolio']['projects'] ?? [
                 [
                     'title'       => 'Port3folio Package',
+                    'category'    => 'Laravel Package',
                     'description' => 'A modular Laravel package for building dynamic, animated portfolio sites with zero config.',
                     'stack'       => ['Laravel 11', 'Blade', 'Bootstrap 5', 'jQuery'],
                     'icon'        => 'box-seam',
@@ -73,6 +114,7 @@ class PordfolioController extends Controller
                 ],
                 [
                     'title'       => 'E-Commerce Platform',
+                    'category'    => 'Marketplace',
                     'description' => 'High-performance multi-vendor marketplace with real-time order tracking and payment gateway integration.',
                     'stack'       => ['Laravel', 'Vue.js', 'MySQL', 'Redis', 'Stripe'],
                     'icon'        => 'cart4',
@@ -82,6 +124,7 @@ class PordfolioController extends Controller
                 ],
                 [
                     'title'       => 'SaaS Analytics Dashboard',
+                    'category'    => 'Analytics',
                     'description' => 'Real-time analytics platform processing millions of events per day with customisable widget boards.',
                     'stack'       => ['Laravel', 'Livewire', 'Alpine.js', 'PostgreSQL', 'Chart.js'],
                     'icon'        => 'graph-up-arrow',
@@ -92,7 +135,32 @@ class PordfolioController extends Controller
             ],
         ];
 
-        return view('pordfolio::index', compact('seo', 'portfolio'));
+        $frameCount = count(glob(__DIR__ . '/../../public/frames/frame-*.webp')) ?: 210;
+
+        return view('pordfolio::nextfolio', compact('seo', 'portfolio', 'frameCount'));
+    }
+
+    /**
+     * Serves the hero scroll-frame keyframe images bundled with this
+     * package (src/public/frames) directly, without requiring the host
+     * app to run vendor:publish.
+     */
+    public function frame(string $filename)
+    {
+        if (!preg_match('/^frame-\d{3}\.webp$/', $filename)) {
+            abort(404);
+        }
+
+        $path = __DIR__ . '/../../public/frames/' . $filename;
+
+        if (!is_file($path)) {
+            abort(404);
+        }
+
+        return response()->file($path, [
+            'Content-Type'  => 'image/webp',
+            'Cache-Control' => 'public, max-age=31536000, immutable',
+        ]);
     }
 
     public function storeMessage(Request $request)

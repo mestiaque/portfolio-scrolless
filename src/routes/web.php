@@ -7,6 +7,12 @@ use ME\Http\Middleware\LocaleMiddleware;
 Route::get('/', [PordfolioController::class, 'index'])->middleware('activityLog')
      ->name('index');
 
+// Hero scroll-frame keyframes, served directly from the package's bundled
+// public/frames/ so no vendor:publish step is needed on deploy.
+Route::get('/frames/{filename}', [PordfolioController::class, 'frame'])
+     ->where('filename', 'frame-\d{3}\.webp')
+     ->name('frames');
+
 Route::get('/ptest', function () {
     return view('pordfolio::threejs');
 });
