@@ -21,7 +21,7 @@ class PordfolioServiceProvider extends ServiceProvider
     public function register()
     {
         if (file_exists(__DIR__ . '/Config/config.php')) {
-            $this->mergeConfigFrom(__DIR__ . '/Config/config.php', 'pordfolio');
+            $this->mergeConfigFrom(__DIR__ . '/Config/config.php', 'port3folio');
         }
 
         if (file_exists(__DIR__ . '/Config/sidebar.php')) {

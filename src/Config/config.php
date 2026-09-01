@@ -11,7 +11,7 @@ return [
         'description'    => 'Experienced full-stack Laravel developer building modern, performant web applications.',
         'keywords'       => 'Laravel, PHP, Full Stack Developer, Web Developer, Portfolio',
         'author'         => 'M. Estiaque Ahmed Khan',
-        'og_image'       => '',
+        'og_image'       => '/frames/frame-156.webp',
         'site_name'      => 'Port3folio',
         'twitter_handle' => '@mestiaque',
         'github_url'     => 'https://github.com/mestiaque',
