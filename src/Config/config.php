@@ -12,7 +12,7 @@ return [
         'keywords'       => 'Laravel, PHP, Full Stack Developer, Web Developer, Portfolio',
         'author'         => 'M. Estiaque Ahmed Khan',
         'og_image'       => '/frames/frame-156.webp',
-        'site_name'      => 'Port3folio',
+        'site_name'      => 'M. Estiaque Ahmed Khan',
         'twitter_handle' => '@mestiaque',
         'github_url'     => 'https://github.com/mestiaque',
         'linkedin_url'   => 'https://linkedin.com/in/mestiaque',

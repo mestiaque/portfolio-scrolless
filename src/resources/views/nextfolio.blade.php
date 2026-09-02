@@ -37,7 +37,7 @@
     <link rel="icon" href="{{ get_image('app_ico') ?? asset('assets/img/favicon/Encodex.ico') }}" type="image/x-icon">
 
     {{-- ─── JSON-LD Structured Data ───────────────────────────── --}}
-    <script type="application/ld+json">
+    {{-- <script type="application/ld+json">
     {
       "@@context": "https://schema.org",
       "@@type": "Person",
@@ -47,7 +47,17 @@
       "jobTitle": "{{ $seo['job_title'] }}",
       "description": "{{ $seo['description'] }}"
     }
+    </script> --}}
+    <script type="application/ld+json">
+    {
+    "@@context": "https://schema.org",
+    "@@type": "WebSite",
+    "name": "{{ $seo['author'] }}",
+    "alternateName": "M Estiaque Ahmed Khan",
+    "url": "https://mestiaque.com"
+    }
     </script>
+
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
